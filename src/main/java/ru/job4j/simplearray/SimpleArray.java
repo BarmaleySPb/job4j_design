@@ -24,10 +24,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public void remove(int index) {
         Objects.checkIndex(index, lastIndex);
-        T[] temp = models;
-        models = (T[]) new Object[10];
-        System.arraycopy(temp, 0, models, 0, index);
-        System.arraycopy(temp, index + 1, models, index, lastIndex);
+        System.arraycopy(models, index + 1, models, index, lastIndex);
         lastIndex--;
     }
 
@@ -38,6 +35,6 @@ public class SimpleArray<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ArrayIterator<>(models);
+        return new ArrayIterator<T>(models, lastIndex);
     }
 }

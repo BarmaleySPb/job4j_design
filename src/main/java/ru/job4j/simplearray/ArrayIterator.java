@@ -6,15 +6,17 @@ import java.util.NoSuchElementException;
 public class ArrayIterator<T> implements Iterator<T> {
 
     private final T[] data;
+    private final int lastIndex;
     private int point = 0;
 
-    public ArrayIterator(T[] data) {
+    public ArrayIterator(T[] data, int lastIndex) {
         this.data = data;
+        this.lastIndex = lastIndex;
     }
 
     @Override
     public boolean hasNext() {
-        return point < data.length;
+        return point < lastIndex;
     }
 
     @Override
