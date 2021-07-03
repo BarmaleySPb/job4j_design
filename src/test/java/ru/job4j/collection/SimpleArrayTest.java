@@ -29,7 +29,7 @@ public class SimpleArrayTest {
 
     @Test
     public void whenCreateSizeTwoAndAddThree() {
-        SimpleArray<String> array = new SimpleArray<>();
+        SimpleArray<String> array = new SimpleArray<>(2);
         array.add("first");
         array.add("second");
         assertThat(array.size(), is(2));

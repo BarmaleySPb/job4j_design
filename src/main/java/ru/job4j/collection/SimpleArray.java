@@ -7,11 +7,15 @@ public class SimpleArray<T> implements Iterable<T> {
 
     private T[] models;
     private int lastIndex = 0;
-    private int size = 2;
+    private int size = 0;
 
     public static int modCount = 0;
 
     public SimpleArray() {
+        models = (T[]) new Object[size];
+    }
+
+    public SimpleArray(int size) {
         models = (T[]) new Object[size];
     }
 
