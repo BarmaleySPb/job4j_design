@@ -1,5 +1,6 @@
 package ru.job4j.collection;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -7,9 +8,8 @@ public class SimpleArray<T> implements Iterable<T> {
 
     private T[] models;
     private int lastIndex = 0;
-    private int size = 0;
-
-    public static int modCount = 0;
+    private int size = 1;
+    private static int modCount = 0;
 
     public SimpleArray() {
         models = (T[]) new Object[size];
@@ -26,9 +26,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public void add(T model) {
         if (lastIndex == size) {
-            T[] temp = models;
-            models = (T[]) new Object[size + 1];
-            System.arraycopy(temp, 0, models, 0, lastIndex);
+            models = Arrays.copyOf(models, models.length * 2);
             size++;
         }
         models[lastIndex] = model;
@@ -38,6 +36,10 @@ public class SimpleArray<T> implements Iterable<T> {
 
     public int size() {
         return size;
+    }
+
+    public static int getModCount() {
+        return modCount;
     }
 
     @Override

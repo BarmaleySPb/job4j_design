@@ -24,7 +24,7 @@ public class ArrayIterator<T> implements Iterator<T> {
 
     @Override
     public T next() {
-        if (expectedModCount != SimpleArray.modCount) {
+        if (expectedModCount != SimpleArray.getModCount()) {
             throw new ConcurrentModificationException();
         }
         if (!hasNext()) {
