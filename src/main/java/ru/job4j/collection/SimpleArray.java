@@ -1,15 +1,13 @@
 package ru.job4j.collection;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 public class SimpleArray<T> implements Iterable<T> {
 
     private T[] models;
     private int lastIndex = 0;
     private int size = 1;
-    private static int modCount = 0;
+    private int modCount = 0;
 
     public SimpleArray() {
         models = (T[]) new Object[size];
@@ -38,12 +36,27 @@ public class SimpleArray<T> implements Iterable<T> {
         return size;
     }
 
-    public static int getModCount() {
-        return modCount;
-    }
-
     @Override
     public Iterator<T> iterator() {
-        return new ArrayIterator<T>(models, lastIndex, modCount);
+        return new Iterator<T>() {
+            private int point = 0;
+            private final int expectedModCount = modCount;
+
+            @Override
+            public boolean hasNext() {
+                return point < lastIndex;
+            }
+
+            @Override
+            public T next() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return models[point++];
+            }
+        };
     }
 }
