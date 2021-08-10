@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 
 public class SimpleTreeTest {
+
     @Test
     public void when6ElFindLastThen6() {
         Tree<Integer> tree = new SimpleTree<>(1);
@@ -58,6 +59,23 @@ public class SimpleTreeTest {
         );
         assertThat(
                 tree.findBy(3).isPresent(),
+                is(true)
+        );
+    }
+
+    @Test
+    public void when6ElFindLastThen62() {
+        Tree<String> tree = new SimpleTree<>("first");
+        tree.add("first", "second");
+        tree.add("first", "third");
+        tree.add("second", "fourth");
+        tree.add("fourth", "fifth");
+        tree.add("fourth", "sixth");
+        tree.add("second", "ixth");
+        assertFalse(tree.add("eighth", "tenth"));
+        assertTrue(tree.add("ixth", "tnth"));
+        assertThat(
+                tree.findBy("second").isPresent(),
                 is(true)
         );
     }
