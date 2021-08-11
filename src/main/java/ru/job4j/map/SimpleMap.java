@@ -43,9 +43,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
         MapEntry<K, V>[] temp = table;
         capacity *= 2;
         table = new MapEntry[capacity];
-        for (int i = 0; i < capacity / 2; i++) {
-            if (temp[i] != null) {
-                table[indexFor(hash(temp[i].key.hashCode()))] = temp[i];
+        for (MapEntry<K, V> mapEntry : temp) {
+            if (mapEntry != null) {
+                table[indexFor(hash(mapEntry.key.hashCode()))] = mapEntry;
             }
         }
     }
@@ -53,13 +53,13 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public V get(K key) {
         int index = indexFor(hash(key.hashCode()));
-        return table[index] == null ? null : table[index].value;
+        return table[index] != null && table[index].key.equals(key) ? table[index].value : null;
     }
 
     @Override
     public boolean remove(K key) {
         int index = indexFor(hash(key.hashCode()));
-        if (table[index] != null) {
+        if (table[index] != null && table[index].key.equals(key)) {
             table[index] = null;
             return true;
         }
@@ -74,6 +74,9 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
             @Override
             public boolean hasNext() {
+                while (table[point] == null) {
+                    point++;
+                }
                 return point < capacity - 1;
             }
 
@@ -84,9 +87,6 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 }
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                while (table[point] == null) {
-                    point++;
                 }
                 return table[point++].key;
             }
