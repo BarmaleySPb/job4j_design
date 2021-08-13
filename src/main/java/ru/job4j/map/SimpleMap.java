@@ -74,10 +74,10 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
             @Override
             public boolean hasNext() {
-                while (table[point] == null) {
+                while (table[point] == null && point < capacity) {
                     point++;
                 }
-                return point < capacity - 1;
+                return point < capacity;
             }
 
             @Override
