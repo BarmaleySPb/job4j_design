@@ -1,6 +1,7 @@
 package ru.job4j.question;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Analize {
@@ -8,14 +9,11 @@ public class Analize {
     public static Info diff(Set<User> previous, Set<User> current) {
         Info info = new Info(0, 0, 0);
 
-        Map<Integer, List<User>> prev = new HashMap<>(
-                previous.stream()
-                        .collect(Collectors.groupingBy(User::getId))
-        );
-        Map<Integer, List<User>> curr = new HashMap<>(
-                current.stream()
-                        .collect(Collectors.groupingBy(User::getId))
-        );
+        Map<Integer, User> prev = previous.stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+
+        Map<Integer, User> curr = current.stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
 
         int changed = 0;
         int twin = 0;
