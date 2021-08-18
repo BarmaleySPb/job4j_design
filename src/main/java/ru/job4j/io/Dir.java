@@ -3,10 +3,10 @@ package ru.job4j.io;
 import java.io.File;
 
 public class Dir {
+    private static final int GB_SIZE = 1073741824;
+    private static final int KB_SIZE = 1024;
 
     public static void main(String[] args) {
-        final int GB_SIZE = 1073741824;
-        final int KB_SIZE = 1024;
 
         File file = new File("C:\\Users\\Barmaley\\IdeaProjects");
         if (!file.exists()) {
