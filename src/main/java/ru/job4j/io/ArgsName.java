@@ -13,12 +13,12 @@ public class ArgsName {
 
     private void parse(String[] args) {
         if (args.length == 0) {
-            throw new IllegalArgumentException("Parametres is null. Usage java -jar argsname.jar KEY=VALLUE");
+            throw new IllegalArgumentException("Parametres is null. Usage java -jar argsname.jar KEY=VALUE");
         }
         for (String arg : args) {
             String[] ar = arg.split("=");
             if (ar.length != 2) {
-                throw new IllegalArgumentException("Wrong args. Usage KEY=vallue and VALLUE=vallue");
+                throw new IllegalArgumentException("Wrong args. Usage KEY=VALUE");
             }
             values.put(ar[0].replace("-", ""), ar[1]);
         }
