@@ -1,0 +1,20 @@
+you: фаф
+bot: hello!
+you: фвафыв
+bot: how old are you?
+you: ыва
+bot: goodbye!
+you: ку
+bot: how are you?
+command: стоп
+you: выапы
+you: ывап
+you: ыавпы
+you: апыва
+you: пыв
+command: продолжить
+you: енуке
+bot: how are you?
+you: кеуену
+bot: hello!
+command: закончить
