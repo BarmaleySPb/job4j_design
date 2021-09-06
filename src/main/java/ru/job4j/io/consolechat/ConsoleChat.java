@@ -18,33 +18,26 @@ public class ConsoleChat {
     }
 
     public void run() {
-        List<String> botReply = readPhrases();
+        boolean botActive = true;
         List<String> toLog = new LinkedList<>();
-        boolean active = true;
-        String bot = "";
-        String answer = "";
+        List<String> botAnswers = readPhrases();
+        String yourReply = "";
+        Scanner scanner = new Scanner(System.in);
 
-        while (!answer.equals(OUT)) {
-            Scanner scanner = new Scanner(System.in);
-            answer = scanner.nextLine();
+        Map<String, Boolean> switchOfBot = Map.of(
+                STOP, false,
+                CONTINUE, true,
+                OUT, false
+        );
 
-            switch (answer) {
-                case STOP, OUT -> {
-                    active = false;
-                    toLog.add("command: " + answer);
-                }
-                case CONTINUE -> {
-                    active = true;
-                    toLog.add("command: " + answer);
-                }
-                default -> {
-                    toLog.add("you: " + answer);
-                    if (active) {
-                        bot = botReply.get((int) (Math.random() * botReply.size()));
-                        System.out.println(bot);
-                        toLog.add("bot: " + bot);
-                    }
-                }
+        while (!yourReply.equals(OUT)) {
+            yourReply = scanner.nextLine();
+            toLog.add("you: " + yourReply);
+            botActive = switchOfBot.getOrDefault(yourReply, botActive);
+            if (botActive) {
+                String botAnswer = botAnswers.get((int) (Math.random() * botAnswers.size()));
+                System.out.println(botAnswer);
+                toLog.add("bot: " + botAnswer);
             }
         }
         saveLog(toLog);
