@@ -24,6 +24,34 @@ public class Box {
         this.ownerAddress = ownerAddress;
     }
 
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public boolean isDblBottom() {
+        return dblBottom;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public String[] getOwnerAddress() {
+        return ownerAddress;
+    }
+
     @Override
     public String toString() {
         return "Box{"

@@ -9,6 +9,14 @@ public class Goods {
         this.weight = weight;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
     @Override
     public String toString() {
         return "Goods{"
