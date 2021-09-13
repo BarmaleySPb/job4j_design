@@ -30,12 +30,9 @@ public class Person {
 
     public static void main(String[] args) {
         final Person person = new Person(false, 30, new Contact("11-111"), "Worker", "Married");
-
-        /* Преобразуем объект person в json-строку. */
         final Gson gson = new GsonBuilder().create();
         System.out.println(gson.toJson(person));
 
-        /* Модифицируем json-строку */
         final String personJson =
                 "{"
                         + "\"sex\":false,"
@@ -46,7 +43,7 @@ public class Person {
                         + "},"
                         + "\"statuses\":"
                         + "[\"Student\",\"Free\"]"
-                        + "}";
+                + "}";
         final Person personMod = gson.fromJson(personJson, Person.class);
         System.out.println(personMod);
     }
