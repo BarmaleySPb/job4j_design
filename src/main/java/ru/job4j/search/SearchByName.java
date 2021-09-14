@@ -7,6 +7,6 @@ public class SearchByName implements SearchByType {
 
     @Override
     public Predicate<Path> search(String file) {
-        return p -> p.toFile().getName().endsWith(file);
+        return p -> p.toFile().getName().equals(file);
     }
 }

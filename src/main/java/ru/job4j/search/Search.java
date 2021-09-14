@@ -15,15 +15,26 @@ import java.util.function.Predicate;
 public class Search {
 
     private final String resultFile;
+    private SearchByType searchByType;
 
-    private Search(ArgsName args, SearchByType searchByType) throws IOException {
+    private Search(ArgsName args) throws IOException {
         Path path = Path.of(args.get("d"));
         String file = args.get("n");
         resultFile = args.get("o");
 
+        setSearchByType(args.get("t"));
         Predicate<Path> predicate = searchByType.search(file);
         List<Path> listToLog = ru.job4j.io.Search.search(path, predicate);
         saveToFile(listToLog);
+    }
+
+    private void setSearchByType(String type) {
+        Map<String, SearchByType> typeOfSearch = Map.of(
+                "mask", new SearchByMask(),
+                "name", new SearchByName(),
+                "regex", new SearchByRegex()
+        );
+        this.searchByType = typeOfSearch.get(type);
     }
 
     private void saveToFile(List<Path> list) {
@@ -42,13 +53,6 @@ public class Search {
             );
         }
         ArgsName arguments = ArgsName.of(args);
-
-        Map<String, SearchByType> typeOfSearch = Map.of(
-                "mask", new SearchByMask(),
-                "name", new SearchByName(),
-                "regex", new SearchByRegex()
-        );
-
-        new Search(arguments, typeOfSearch.get(arguments.get("t")));
+        new Search(arguments);
     }
 }
