@@ -8,10 +8,11 @@ public class SearchByMask implements SearchByType {
 
     @Override
     public Predicate<Path> search(String file) {
-        String newFile = file.replace(".", "\\.")
+        file = file.replace(".", "\\.")
                 .replace("*", ".+")
                 .replace("?", ".");
+        Pattern pattern = Pattern.compile(file);
 
-        return p -> Pattern.compile(newFile).matcher(p.toFile().getName()).matches();
+        return p -> pattern.matcher(p.toFile().getName()).matches();
     }
 }
