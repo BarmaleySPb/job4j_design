@@ -23,7 +23,7 @@ insert into product(name, type_id, expired_date, price) values
 
 select * from product;
 
-select * from product where type_id = 1;
+select * from product where type_id = (select type.id from type where name = 'Cheese');
 
 select * from product where name like '%Ice cream%';
 
@@ -36,7 +36,13 @@ from product
 join type t on type_id = t.id
 group by t.name;
 
-select * from product where type_id = 1 or type_id = 3;
+select *
+from product
+where
+	type_id = (select type.id from type where name = 'Cheese')
+	or
+	type_id = (select type.id from type where name = 'Groat');
+
 
 select t.name, count(*)
 from product
