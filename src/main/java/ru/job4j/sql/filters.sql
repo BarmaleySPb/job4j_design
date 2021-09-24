@@ -38,10 +38,15 @@ group by t.name;
 
 select *
 from product
-where
-	type_id = (select type.id from type where name = 'Cheese')
-	or
-	type_id = (select type.id from type where name = 'Groat');
+where type_id in (
+	select type.id from type where name = 'Cheese' or name = 'Groat'
+);
+
+select *
+from product
+where type_id in (
+		select type.id from type where name in ('Cheese', 'Groat')
+);
 
 
 select t.name, count(*)
