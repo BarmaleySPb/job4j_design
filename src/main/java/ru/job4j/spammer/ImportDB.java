@@ -22,7 +22,6 @@ public class ImportDB {
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-            /* rd.lines().forEach(...); */
             rd.lines().forEach(a -> {
                 String[] asd = a.split(";");
                 users.add(new User(asd[0], asd[1]));
@@ -60,10 +59,10 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();
-        try (FileInputStream in = new FileInputStream(".\\data\\spammer\\app.properties")) {
+        try (FileInputStream in = new FileInputStream("./data/spammer/app.properties")) {
             cfg.load(in);
         }
-        ImportDB db = new ImportDB(cfg, ".\\data\\spammer\\dump.txt");
+        ImportDB db = new ImportDB(cfg, "./data/spammer/dump.txt");
         db.save(db.load());
     }
 }
