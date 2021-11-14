@@ -9,18 +9,14 @@ public class DirFileCache extends AbstractCache<String, String> {
     private final String cachingDir;
 
     public DirFileCache(String cachingDir) {
-        if (cachingDir.endsWith("/")) {
-            this.cachingDir = cachingDir;
-        } else {
-            this.cachingDir = cachingDir + "/";
-        }
+        this.cachingDir = cachingDir;
     }
 
     @Override
     protected String load(String key) {
         String value = "";
         try {
-            value = Files.readString(Paths.get(cachingDir + key), StandardCharsets.UTF_8);
+            value = Files.readString(Paths.get(cachingDir, key), StandardCharsets.UTF_8);
         } catch (Exception e) {
             System.out.println("File " + key + " not exist!!!");
         }

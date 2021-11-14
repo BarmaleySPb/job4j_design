@@ -38,7 +38,8 @@ public class ValidateInput implements Input {
         Path value = Paths.get("");
         while (invalid) {
             value = in.askFiles(question);
-            if (!Files.exists(Paths.get(String.valueOf(value)))) {
+            String chek = String.valueOf(value);
+            if (!Files.exists(Paths.get(chek)) || chek.isEmpty()) {
                 System.out.println("Directory not found. Try again.");
                 continue;
             }
