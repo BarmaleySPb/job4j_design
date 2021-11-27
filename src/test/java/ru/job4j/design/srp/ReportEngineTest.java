@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Assert;
 import org.junit.Test;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ReportEngineTest {
 
@@ -102,5 +103,77 @@ public class ReportEngineTest {
                 .append(workerFirst.getSalary()).append(";")
                 .append(System.lineSeparator());
         Assert.assertEquals(engine.generate(em -> true), expect.toString());
+    }
+
+    @Test
+    public void whenGenerateXmlReport() {
+        MemStore store = new MemStore();
+        Calendar hired = new GregorianCalendar(2015, Calendar.FEBRUARY, 2);
+        Calendar fired = new GregorianCalendar(2020, Calendar.JANUARY, 10);
+        Employee workerFirst = new Employee("Ivan", fired, hired, 100);
+        Employee workerSecond = new Employee("Petr", fired, hired, 190);
+        Employee workerThird = new Employee("Olga", fired, hired, 150);
+        store.add(workerFirst);
+        store.add(workerSecond);
+        store.add(workerThird);
+        Report engine = new ReportXml(store);
+        String expect = """
+                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                <employees>
+                    <employees>
+                        <fired>2015-02-02T00:00:00+03:00</fired>
+                        <hired>2020-01-10T00:00:00+03:00</hired>
+                        <name>Petr</name>
+                        <salary>190.0</salary>
+                    </employees>
+                </employees>
+                """;
+        Assert.assertEquals(engine.generate(m -> m.getSalary() > 150), expect);
+    }
+
+    @Test
+    public void whenGenerateJsonReport() {
+        MemStore store = new MemStore();
+        Calendar hired = new GregorianCalendar(2015, Calendar.FEBRUARY, 2);
+        Calendar fired = new GregorianCalendar(2020, Calendar.JANUARY, 10);
+        Employee workerFirst = new Employee("Ivan", fired, hired, 100);
+        Employee workerSecond = new Employee("Petr", fired, hired, 190);
+        Employee workerThird = new Employee("Olga", fired, hired, 150);
+        store.add(workerFirst);
+        store.add(workerSecond);
+        store.add(workerThird);
+        Report engine = new ReportJson(store);
+        String expect = "{\"name\":\"Ivan\",\"hired\":{\"year\":2020,\"month\":0,\"dayOfMonth\":10,"
+                + "\"hourOfDay\":0,\"minute\":0,\"second\":0},\"fired\":{\"year\":2015,\"month\":1,"
+                + "\"dayOfMonth\":2,\"hourOfDay\":0,\"minute\":0,\"second\":0},\"salary\":100.0}"
+                + System.lineSeparator();
+        Assert.assertEquals(engine.generate(m -> m.getSalary() < 150), expect);
+    }
+
+    @Test
+    public void whenGenerateJsonReportAndSeveralItems() {
+        MemStore store = new MemStore();
+        Calendar hired = new GregorianCalendar(2015, Calendar.FEBRUARY, 2);
+        Calendar fired = new GregorianCalendar(2020, Calendar.JANUARY, 10);
+        Employee workerFirst = new Employee("Ivan", fired, hired, 100);
+        Employee workerSecond = new Employee("Petr", fired, hired, 190);
+        Employee workerThird = new Employee("Olga", fired, hired, 150);
+        store.add(workerFirst);
+        store.add(workerSecond);
+        store.add(workerThird);
+        Report engine = new ReportJson(store);
+        String expect = "{\"name\":\"Ivan\",\"hired\":{\"year\":2020,\"month\":0,\"dayOfMonth\":10,"
+                + "\"hourOfDay\":0,\"minute\":0,\"second\":0},\"fired\":{\"year\":2015,\"month\":1,"
+                + "\"dayOfMonth\":2,\"hourOfDay\":0,\"minute\":0,\"second\":0},\"salary\":100.0}"
+                + System.lineSeparator()
+                + "{\"name\":\"Petr\",\"hired\":{\"year\":2020,\"month\":0,\"dayOfMonth\":10,\"hourOfDay\":0,"
+                + "\"minute\":0,\"second\":0},\"fired\":{\"year\":2015,\"month\":1,\"dayOfMonth\":2,"
+                + "\"hourOfDay\":0,\"minute\":0,\"second\":0},\"salary\":190.0}"
+                + System.lineSeparator()
+                + "{\"name\":\"Olga\",\"hired\":{\"year\":2020,\"month\":0,\"dayOfMonth\":10,\"hourOfDay\":0,"
+                + "\"minute\":0,\"second\":0},\"fired\":{\"year\":2015,\"month\":1,\"dayOfMonth\":2,\"hourOfDay\":0,"
+                + "\"minute\":0,\"second\":0},\"salary\":150.0}"
+                + System.lineSeparator();
+        Assert.assertEquals(engine.generate(m -> true), expect);
     }
 }
