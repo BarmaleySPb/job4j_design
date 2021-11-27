@@ -117,18 +117,17 @@ public class ReportEngineTest {
         store.add(workerSecond);
         store.add(workerThird);
         Report engine = new ReportXml(store);
-        String expect = """
-                <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-                <employees>
-                    <employees>
-                        <fired>2015-02-02T00:00:00+03:00</fired>
-                        <hired>2020-01-10T00:00:00+03:00</hired>
-                        <name>Petr</name>
-                        <salary>190.0</salary>
-                    </employees>
-                </employees>
-                """;
-        Assert.assertEquals(engine.generate(m -> m.getSalary() > 150), expect);
+        StringBuilder expect = new StringBuilder()
+                .append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n")
+                .append("<employees>\n")
+                .append("    <employees>\n")
+                .append("        <fired>2015-02-02T00:00:00+03:00</fired>\n")
+                .append("        <hired>2020-01-10T00:00:00+03:00</hired>\n")
+                .append("        <name>Petr</name>\n")
+                .append("        <salary>190.0</salary>\n")
+                .append("    </employees>\n")
+                .append("</employees>\n");
+        Assert.assertEquals(engine.generate(m -> m.getSalary() > 150), expect.toString());
     }
 
     @Test
