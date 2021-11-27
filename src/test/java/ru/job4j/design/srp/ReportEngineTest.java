@@ -144,8 +144,7 @@ public class ReportEngineTest {
         Report engine = new ReportJson(store);
         String expect = "{\"name\":\"Ivan\",\"hired\":{\"year\":2020,\"month\":0,\"dayOfMonth\":10,"
                 + "\"hourOfDay\":0,\"minute\":0,\"second\":0},\"fired\":{\"year\":2015,\"month\":1,"
-                + "\"dayOfMonth\":2,\"hourOfDay\":0,\"minute\":0,\"second\":0},\"salary\":100.0}"
-                + System.lineSeparator();
+                + "\"dayOfMonth\":2,\"hourOfDay\":0,\"minute\":0,\"second\":0},\"salary\":100.0}";
         Assert.assertEquals(engine.generate(m -> m.getSalary() < 150), expect);
     }
 
