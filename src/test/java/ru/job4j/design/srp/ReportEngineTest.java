@@ -133,11 +133,9 @@ public class ReportEngineTest {
     @Test
     public void whenGenerateJsonReport() {
         MemStore store = new MemStore();
-        Calendar hired = new GregorianCalendar(2015, Calendar.FEBRUARY, 2);
-        Calendar fired = new GregorianCalendar(2020, Calendar.JANUARY, 10);
         Employee workerFirst = new Employee("Ivan", null, null, 100);
-        Employee workerSecond = new Employee("Petr", fired, hired, 190);
-        Employee workerThird = new Employee("Olga", fired, hired, 150);
+        Employee workerSecond = new Employee("Petr", null, null, 190);
+        Employee workerThird = new Employee("Olga", null, null, 150);
         store.add(workerFirst);
         store.add(workerSecond);
         store.add(workerThird);
