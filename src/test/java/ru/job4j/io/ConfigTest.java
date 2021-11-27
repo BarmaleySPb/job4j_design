@@ -1,12 +1,10 @@
 package ru.job4j.io;
 
-import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.IllegalArgumentException;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class ConfigTest {
 
@@ -15,8 +13,8 @@ public class ConfigTest {
         String path = "./data/pair_without_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("name"), is("Petr Arsentev"));
-        assertThat(config.value("surname"), is(Matchers.nullValue()));
+        Assert.assertEquals(config.value("name"), "Petr Arsentev");
+        Assert.assertNull(config.value("surname"));
     }
 
     @Test
@@ -24,8 +22,8 @@ public class ConfigTest {
         String path = "./data/pair_with_comment.properties";
         Config config = new Config(path);
         config.load();
-        assertThat(config.value("name"), is("Petr"));
-        assertThat(config.value("surname"), is("Arsentev"));
+        Assert.assertEquals(config.value("name"), "Petr");
+        Assert.assertEquals(config.value("surname"), "Arsentev");
     }
 
     @Test(expected = IllegalArgumentException.class)
