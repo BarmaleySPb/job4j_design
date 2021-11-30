@@ -15,13 +15,21 @@ public class Warehouse implements Storage {
     }
 
     @Override
-    public void add(Food food) {
-        warehouse.add(food);
+    public boolean add(Food food) {
+        if (accept(food)) {
+            return warehouse.add(food);
+        }
+        return false;
     }
 
     @Override
-    public void remove(Food food) {
-        warehouse.remove(food);
+    public boolean remove(Food food) {
+        return warehouse.remove(food);
+    }
+
+    @Override
+    public boolean accept(Food food) {
+        return remainingShelfLife(food) > 75;
     }
 
     @Override

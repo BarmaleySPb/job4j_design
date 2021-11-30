@@ -7,9 +7,19 @@ public interface Storage {
 
     List<Food> findBy(Predicate<Food> filter);
 
-    void add(Food food);
+    boolean add(Food food);
 
-    void remove(Food food);
+    boolean remove(Food food);
+
+    boolean accept(Food food);
 
     int size();
+
+    default int remainingShelfLife(Food food) {
+        long expiryDate = food.getExpiryDate().getTimeInMillis();
+        long createDate = food.getCreateDate().getTimeInMillis();
+        long percent = (expiryDate - createDate) / 100;
+        long remain = (expiryDate - System.currentTimeMillis()) / percent;
+        return Math.round(remain);
+    }
 }

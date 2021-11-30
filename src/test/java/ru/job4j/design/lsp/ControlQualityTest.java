@@ -10,7 +10,7 @@ import java.util.List;
 public class ControlQualityTest {
 
     @Test
-    public void remainingShelfLife() {
+    public void whenOneToTrashAndOneToWarehouse() {
         Calendar firstCreateDate = Calendar.getInstance();
         firstCreateDate.roll(Calendar.YEAR, -1);
         Calendar firstExpireDate = Calendar.getInstance();
@@ -21,11 +21,13 @@ public class ControlQualityTest {
         secondExpireDate.roll(Calendar.YEAR, -1);
         Food milk = new Food("milk", firstCreateDate, firstExpireDate, 100D, 0);
         Food bread = new Food("bread", secondCreateDate, secondExpireDate, 100D, 0);
-        ControlQuality controlQuality = new ControlQuality(List.of(new Warehouse()));
-        int result = controlQuality.remainingShelfLife(milk);
-        int result2 = controlQuality.remainingShelfLife(bread);
-        Assert.assertEquals(result, 83);
-        Assert.assertEquals(result2, -49);
+        Warehouse warehouse = new Warehouse();
+        Trash trash = new Trash();
+        ControlQuality controlQuality = new ControlQuality(List.of(warehouse, trash));
+        controlQuality.distribute(milk);
+        controlQuality.distribute(bread);
+        Assert.assertEquals(trash.size(), 1);
+        Assert.assertEquals(warehouse.size(), 1);
     }
 
     @Test
@@ -45,10 +47,12 @@ public class ControlQualityTest {
         Trash trash = new Trash();
         List<Food> foods = List.of(
                 new Food("milk", firstCreateDate, firstExpireDate, 100D, 0),
-                new Food("sous", secondCreateDate, thirdExpireDate, 100D, 0),
+                new Food("sauce", secondCreateDate, thirdExpireDate, 100D, 0),
                 new Food("bread", secondCreateDate, secondExpireDate, 100D, 0));
         ControlQuality controlQuality = new ControlQuality(List.of(warehouse, shop, trash));
-        controlQuality.sorting(foods);
+        controlQuality.distribute(foods.get(0));
+        controlQuality.distribute(foods.get(1));
+        controlQuality.distribute(foods.get(2));
         int resultTrash = trash.size();
         int resultShop = shop.size();
         int resultDiscount = foods.get(1).getDiscount();

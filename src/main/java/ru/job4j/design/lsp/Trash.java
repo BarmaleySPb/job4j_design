@@ -15,13 +15,21 @@ public class Trash implements Storage {
     }
 
     @Override
-    public void add(Food food) {
-        trash.add(food);
+    public boolean add(Food food) {
+        if (accept(food)) {
+            return trash.add(food);
+        }
+        return false;
     }
 
     @Override
-    public void remove(Food food) {
-        trash.remove(food);
+    public boolean remove(Food food) {
+        return trash.remove(food);
+    }
+
+    @Override
+    public boolean accept(Food food) {
+        return remainingShelfLife(food) <= 0;
     }
 
     @Override

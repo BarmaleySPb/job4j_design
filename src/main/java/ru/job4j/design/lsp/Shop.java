@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static ru.job4j.design.lsp.ControlQuality.DISCOUNT;
+
 public class Shop implements Storage {
 
     private final List<Food> shop = new ArrayList<>();
@@ -15,13 +17,28 @@ public class Shop implements Storage {
     }
 
     @Override
-    public void add(Food food) {
-        shop.add(food);
+    public boolean add(Food food) {
+        if (accept(food)) {
+            return shop.add(food);
+        }
+        return false;
     }
 
     @Override
-    public void remove(Food food) {
-        shop.remove(food);
+    public boolean remove(Food food) {
+        return shop.remove(food);
+    }
+
+    @Override
+    public boolean accept(Food food) {
+        int remainingPercent = remainingShelfLife(food);
+        if (remainingPercent >= 25 && remainingPercent < 75) {
+            return true;
+        } else if (remainingPercent < 25 && remainingPercent > 0) {
+            food.setDiscount(DISCOUNT);
+            return true;
+        }
+        return false;
     }
 
     @Override
