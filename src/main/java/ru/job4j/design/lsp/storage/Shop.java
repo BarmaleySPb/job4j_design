@@ -1,11 +1,11 @@
-package ru.job4j.design.lsp;
+package ru.job4j.design.lsp.storage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static ru.job4j.design.lsp.ControlQuality.DISCOUNT;
+import static ru.job4j.design.lsp.storage.ControlQuality.DISCOUNT;
 
 public class Shop implements Storage {
 

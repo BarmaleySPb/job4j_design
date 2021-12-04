@@ -1,4 +1,4 @@
-package ru.job4j.design.lsp;
+package ru.job4j.design.lsp.storage;
 
 import org.junit.Assert;
 import org.junit.Test;
