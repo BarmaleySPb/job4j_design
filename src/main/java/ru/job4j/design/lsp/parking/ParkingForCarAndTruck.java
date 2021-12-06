@@ -1,6 +1,8 @@
 package ru.job4j.design.lsp.parking;
 
 
+import static ru.job4j.design.lsp.parking.Car.SIZE_OF_CAR;
+
 public class ParkingForCarAndTruck implements Parking {
     private final String[] parkingForCarAndTruck;
     private final int spacesForCar;
@@ -16,7 +18,7 @@ public class ParkingForCarAndTruck implements Parking {
 
     @Override
     public boolean addVehicle(Vehicle vehicle) {
-        if (vehicle.getSize() == 1) {
+        if (vehicle.getSize() == SIZE_OF_CAR) {
             if (getNumberOfFreeSpacesForCar() > 0) {
                 for (int i = 0; i < spacesForCar; i++) {
                     if (parkingForCarAndTruck[i] == null) {
