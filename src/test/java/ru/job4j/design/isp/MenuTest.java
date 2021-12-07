@@ -25,7 +25,7 @@ public class MenuTest {
         Item secondItem = new Item("Second Item");
         menu.addItem(firstItem);
         menu.addSubItem(firstItem, secondItem);
-        Assert.assertEquals(1, menu.getItem("1.").childrenItems.size());
+        Assert.assertEquals(1, menu.getItem("1.").getChildrenItems().size());
     }
 
     @Rule

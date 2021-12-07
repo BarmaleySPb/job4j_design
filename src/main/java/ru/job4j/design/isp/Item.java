@@ -6,11 +6,11 @@ import java.util.TreeMap;
 
 public class Item {
 
-    String name;
-    String number;
-    int levelSub;
-    TreeMap<String, Item> childrenItems;
-    Action action;
+    private String name;
+    private String number;
+    private int levelSub;
+    private TreeMap<String, Item> childrenItems;
+    private Action action;
 
     Item() {
 
@@ -46,5 +46,45 @@ public class Item {
     @Override
     public int hashCode() {
         return Objects.hash(name, number, levelSub, childrenItems, action);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public int getLevelSub() {
+        return levelSub;
+    }
+
+    public void setLevelSub(int levelSub) {
+        this.levelSub = levelSub;
+    }
+
+    public TreeMap<String, Item> getChildrenItems() {
+        return childrenItems;
+    }
+
+    public void setChildrenItems(TreeMap<String, Item> childrenItems) {
+        this.childrenItems = childrenItems;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
     }
 }
