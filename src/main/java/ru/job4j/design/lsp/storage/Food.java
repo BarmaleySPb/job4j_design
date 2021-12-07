@@ -2,6 +2,7 @@ package ru.job4j.design.lsp.storage;
 
 import java.util.Calendar;
 
+
 public class Food {
     private String name;
     private Calendar expiryDate;
@@ -59,5 +60,16 @@ public class Food {
 
     public void setDiscount(int discount) {
         this.discount = discount;
+    }
+
+    @Override
+    public String toString() {
+        return "Food{"
+                + "name='" + name + '\''
+                + ", expiryDate=" + expiryDate
+                + ", createDate=" + createDate
+                + ", price=" + price
+                + ", discount=" + discount
+                + '}';
     }
 }

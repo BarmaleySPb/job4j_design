@@ -1,5 +1,6 @@
 package ru.job4j.design.lsp.storage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,5 +22,12 @@ public class ControlQuality {
         });
     }
 
-
+    public void resort() {
+        ArrayList<Food> foods = new ArrayList<>();
+        for (Storage storage : storages) {
+            foods.addAll(storage.getListOfFood());
+            storage.removeAllFood();
+        }
+        foods.forEach(this::distribute);
+    }
 }

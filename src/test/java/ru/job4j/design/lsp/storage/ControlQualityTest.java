@@ -60,4 +60,32 @@ public class ControlQualityTest {
         Assert.assertEquals(2, resultShop);
         Assert.assertEquals(20, resultDiscount);
     }
+
+    @Test
+    public void whenResortOneFoodAddToTrash() {
+        Calendar firstCreateDate = Calendar.getInstance();
+        firstCreateDate.roll(Calendar.YEAR, -3);
+        Calendar firstExpireDate = Calendar.getInstance();
+        firstExpireDate.roll(Calendar.YEAR, -1);
+        Calendar secondCreateDate = Calendar.getInstance();
+        secondCreateDate.roll(Calendar.DAY_OF_YEAR, -10);
+        Calendar secondExpireDate = Calendar.getInstance();
+        secondExpireDate.roll(Calendar.DAY_OF_YEAR, +10);
+        Calendar thirdExpireDate = Calendar.getInstance();
+        thirdExpireDate.roll(Calendar.DAY_OF_YEAR, +1);
+        Warehouse warehouse = new Warehouse();
+        Shop shop = new Shop();
+        Trash trash = new Trash();
+        List<Food> foods = List.of(
+                new Food("milk", firstCreateDate, firstExpireDate, 100D, 0),
+                new Food("sauce", secondCreateDate, thirdExpireDate, 100D, 0),
+                new Food("bread", secondCreateDate, secondExpireDate, 100D, 0));
+        ControlQuality controlQuality = new ControlQuality(List.of(warehouse, shop, trash));
+        foods.forEach(controlQuality::distribute);
+        Assert.assertEquals(1, trash.size());
+        thirdExpireDate.roll(Calendar.DAY_OF_YEAR, -5);
+        foods.get(1).setExpiryDate(thirdExpireDate);
+        controlQuality.resort();
+        Assert.assertEquals(2, trash.size());
+        }
 }

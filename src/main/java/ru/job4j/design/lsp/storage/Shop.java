@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import static ru.job4j.design.lsp.storage.ControlQuality.DISCOUNT;
 
+
 public class Shop implements Storage {
 
     private final List<Food> shop = new ArrayList<>();
@@ -14,6 +15,11 @@ public class Shop implements Storage {
     @Override
     public List<Food> findBy(Predicate<Food> filter) {
         return shop.stream().filter(filter).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Food> getListOfFood() {
+        return shop;
     }
 
     @Override
@@ -39,6 +45,11 @@ public class Shop implements Storage {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void removeAllFood() {
+        shop.clear();
     }
 
     @Override

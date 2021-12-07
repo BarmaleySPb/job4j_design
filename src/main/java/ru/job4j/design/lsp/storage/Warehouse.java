@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+
 public class Warehouse implements Storage {
 
     private final List<Food> warehouse = new ArrayList<>();
@@ -12,6 +13,11 @@ public class Warehouse implements Storage {
     @Override
     public List<Food> findBy(Predicate<Food> filter) {
         return warehouse.stream().filter(filter).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Food> getListOfFood() {
+        return warehouse;
     }
 
     @Override
@@ -30,6 +36,11 @@ public class Warehouse implements Storage {
     @Override
     public boolean accept(Food food) {
         return remainingShelfLife(food) > 75;
+    }
+
+    @Override
+    public void removeAllFood() {
+        warehouse.clear();
     }
 
     @Override
