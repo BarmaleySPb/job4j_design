@@ -12,49 +12,56 @@ public class Menu implements InterfaceMenu {
     }
 
     @Override
-    public void addItem(Item item) {
-        item.setNumber(numberOfItem++ + ".");
-        menu.put(item.getNumber(), item);
+    public boolean add(String parentName, Action action) {
+        if (getItem(parentName) == null) {
+            String number = numberOfItem++ + ".";
+            Item parentItem = new Item(parentName, action);
+            parentItem.setNumber(number);
+            menu.put(number, parentItem);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void addSubItem(Item parent, Item childrenItem) {
-        childrenItem.setLevelSub(parent.getLevelSub() + 1);
-        childrenItem.setNumber(parent.getNumber() + (parent.getChildrenItems().size() + 1) + ".");
-        menu.put(childrenItem.getNumber(), childrenItem);
-        parent.getChildrenItems().put(childrenItem.getNumber(), childrenItem);
+    public boolean add(String parentName, String childName, Action action) {
+        if (getItem(parentName) != null) {
+            Item parentItem = getItem(parentName);
+            Item childItem = new Item(childName, action);
+            childItem.setLevelSub(parentItem.getLevelSub() + 1);
+            childItem.setNumber(parentItem.getNumber() + (parentItem.getChildrenItems().size() + 1) + ".");
+            menu.put(childItem.getNumber(), childItem);
+            parentItem.getChildrenItems().put(childItem.getNumber(), childItem);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void doIt(String numberOfItem) {
-        menu.get(numberOfItem).getAction().action();
+    public Action select(String itemName) {
+        return getItem(itemName).getAction();
     }
 
     @Override
-    public Item getItem(String number) {
-        return menu.get(number);
-    }
-
-    @Override
-    public void displayFullMenu() {
-        displayList(menu);
-    }
-
-    @Override
-    public void displayOneItem(Item item) {
-        System.out.print(item.getNumber());
-        System.out.println(" " + item.getName());
-        displayList(item.getChildrenItems());
-    }
-
-    private void displayList(TreeMap<String, Item> treeMap) {
-        treeMap.forEach((key, value) -> {
+    public String print() {
+        StringBuilder asd = new StringBuilder();
+        menu.forEach((key, value) -> {
             int steps = key.split("\\.").length - 1;
-            for (int i = 0; i < steps; i++) {
-                System.out.print("  ");
-            }
-            System.out.print(key);
-            System.out.println(" " + value.getName());
+            asd.append("  ".repeat(Math.max(0, steps)))
+                    .append(key)
+                    .append(" ")
+                    .append(value.getName())
+                    .append(System.lineSeparator());
         });
+        return asd.toString();
+    }
+
+    private Item getItem(String nameItem) {
+        for (Item item : menu.values()) {
+            if (item.getName().equals(nameItem)) {
+                return item;
+            }
+        }
+        return null;
     }
 }

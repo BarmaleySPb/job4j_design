@@ -5,50 +5,48 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
+
 public class MenuTest {
+
+    @Rule
+    public final SystemOutRule log = new SystemOutRule().enableLog();
 
     @Test
     public void whenAddItemOfMenu() {
         Menu menu = new Menu();
-        Item firstItem = new Item("First Item");
-        Item secondItem = new Item("Second Item");
-        menu.addItem(firstItem);
-        menu.addItem(secondItem);
-        Assert.assertEquals(menu.getItem("1."), firstItem);
-        Assert.assertEquals(menu.getItem("2."), secondItem);
+        menu.add("First Item", new ActionString());
+        StringBuilder expired = new StringBuilder()
+                .append("1. First Item")
+                .append(System.lineSeparator());
+        System.out.print(menu.print());
+        Assert.assertEquals(expired.toString(), log.getLog());
     }
 
     @Test
     public void whenAddSubItem() {
         Menu menu = new Menu();
-        Item firstItem = new Item("First Item");
-        Item secondItem = new Item("Second Item");
-        menu.addItem(firstItem);
-        menu.addSubItem(firstItem, secondItem);
-        Assert.assertEquals(1, menu.getItem("1.").getChildrenItems().size());
+        menu.add("First Item", new ActionString());
+        menu.add("First Item", "Second Item", new ActionString());
+        StringBuilder expired = new StringBuilder()
+                .append("1. First Item")
+                        .append(System.lineSeparator())
+                                .append("  1.1. Second Item")
+                                        .append(System.lineSeparator());
+        System.out.print(menu.print());
+        Assert.assertEquals(expired.toString(), log.getLog());
     }
 
-    @Rule
-    public final SystemOutRule log = new SystemOutRule().enableLog();
     @Test
-    public void whenDisplayAllMenu() {
+    public void whenPrintMenu() {
         Menu menu = new Menu();
-        Item firstItem = new Item("First Item");
-        Item secondItem = new Item("Second Item");
-        Item thirdItem = new Item("Third Item");
-        Item fourthItem = new Item("Fourth Item");
-        Item fifthItem = new Item("Fifth Item");
-        Item sixthItem = new Item("Sixth Item");
-        Item seventhItem = new Item("Seventh Item");
-        Item eighthItem = new Item("Eighth Item");
-        menu.addItem(firstItem);
-        menu.addItem(fourthItem);
-        menu.addSubItem(firstItem, secondItem);
-        menu.addSubItem(firstItem, thirdItem);
-        menu.addSubItem(secondItem, fifthItem);
-        menu.addSubItem(fifthItem, sixthItem);
-        menu.addSubItem(firstItem, seventhItem);
-        menu.addSubItem(thirdItem, eighthItem);
+        menu.add("First Item", new ActionString());
+        menu.add("Fourth Item", new ActionString());
+        menu.add("First Item", "Second Item", new ActionString());
+        menu.add("First Item", "Third Item", new ActionString());
+        menu.add("Second Item", "Fifth Item", new ActionString());
+        menu.add("Fifth Item", "Sixth Item", new ActionString());
+        menu.add("First Item", "Seventh Item", new ActionString());
+        menu.add("Third Item", "Eighth Item", new ActionString());
         StringBuilder expired = new StringBuilder()
                 .append("1. First Item")
                 .append(System.lineSeparator())
@@ -66,40 +64,16 @@ public class MenuTest {
                 .append(System.lineSeparator())
                 .append("2. Fourth Item")
                 .append(System.lineSeparator());
-        menu.displayFullMenu();
+        System.out.print(menu.print());
         Assert.assertEquals(expired.toString(), log.getLog());
     }
 
     @Test
-    public void whenDisplayOneItem() {
+    public void whenSelectAction() {
         Menu menu = new Menu();
-        Item firstItem = new Item("First Item");
-        Item secondItem = new Item("Second Item");
-        Item thirdItem = new Item("Third Item");
-        menu.addItem(firstItem);
-        menu.addSubItem(firstItem, secondItem);
-        menu.addSubItem(firstItem, thirdItem);
-        menu.displayOneItem(firstItem);
-        StringBuilder expired = new StringBuilder()
-                .append("1. First Item")
-                .append(System.lineSeparator())
-                .append("  1.1. Second Item")
-                .append(System.lineSeparator())
-                .append("  1.2. Third Item")
-                .append(System.lineSeparator());
-        Assert.assertEquals(expired.toString(), log.getLog());
-    }
-
-    @Test
-    public void whenDoItOneDotOneDot() {
-        Menu menu = new Menu();
-        Item firstItem = new Item("First Item");
-        Item secondItem = new Item("Second Item");
-        Item thirdItem = new Item("Third Item", new ActionString());
-        menu.addItem(firstItem);
-        menu.addSubItem(firstItem, secondItem);
-        menu.addSubItem(secondItem, thirdItem);
-        menu.doIt("1.1.1.");
+        menu.add("First Item", new ActionString());
+        menu.add("First Item", "Second Item", new ActionString());
+        menu.select("Second Item").action();
         String expired = "Something is happening)";
         Assert.assertEquals(expired, log.getLog());
     }
@@ -107,14 +81,9 @@ public class MenuTest {
     @Test(expected = NullPointerException.class)
     public void whenDoItOneDotOneDotButActionIsNull() {
         Menu menu = new Menu();
-        Item firstItem = new Item("First Item");
-        Item secondItem = new Item("Second Item");
-        Item thirdItem = new Item("Third Item");
-        menu.addItem(firstItem);
-        menu.addSubItem(firstItem, secondItem);
-        menu.addSubItem(secondItem, thirdItem);
-        menu.doIt("1.1.1.");
-        String expired = "Something is happening)";
-        Assert.assertEquals(expired, log.getLog());
+        menu.add("First Item", new ActionString());
+        menu.add("First Item", "Second Item", new ActionString());
+        menu.add("Second Item", "Third Item", new ActionString());
+        menu.select("Fourth Item");
     }
 }
