@@ -1,31 +1,27 @@
 package ru.job4j.design.isp;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.TreeMap;
 
 
-public class Item {
+public class Item<I> {
 
-    private String name;
+    private I name;
     private String number;
-    private int levelSub;
-    private TreeMap<String, Item> childrenItems;
+    private List<Item<I>> childrenItems = new ArrayList<>();
     private Action action;
 
     Item() {
 
     }
 
-    Item(String name) {
+    Item(I name) {
         this.name = name;
-        this.childrenItems = new TreeMap<>();
-        this.levelSub = 0;
     }
 
-    Item(String name, Action action) {
+    Item(I name, Action action) {
         this.name = name;
-        this.childrenItems = new TreeMap<>();
-        this.levelSub = 0;
         this.action = action;
     }
 
@@ -38,21 +34,21 @@ public class Item {
             return false;
         }
         Item item = (Item) o;
-        return levelSub == item.levelSub && name.equals(item.name) && number.equals(item.number)
+        return name.equals(item.name) && number.equals(item.number)
                 && Objects.equals(childrenItems, item.childrenItems)
                 && Objects.equals(action, item.action);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, number, levelSub, childrenItems, action);
+        return Objects.hash(name, number, childrenItems, action);
     }
 
-    public String getName() {
+    public I getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(I name) {
         this.name = name;
     }
 
@@ -64,19 +60,11 @@ public class Item {
         this.number = number;
     }
 
-    public int getLevelSub() {
-        return levelSub;
-    }
-
-    public void setLevelSub(int levelSub) {
-        this.levelSub = levelSub;
-    }
-
-    public TreeMap<String, Item> getChildrenItems() {
+    public List<Item<I>> getChildrenItems() {
         return childrenItems;
     }
 
-    public void setChildrenItems(TreeMap<String, Item> childrenItems) {
+    public void setChildrenItems(List<Item<I>> childrenItems) {
         this.childrenItems = childrenItems;
     }
 

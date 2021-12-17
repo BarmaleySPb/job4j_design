@@ -1,10 +1,9 @@
 package ru.job4j.design.isp;
 
 
-public interface InterfaceMenu {
+public interface InterfaceMenu<I> {
 
-    boolean add(String parentName, Action action);
-    boolean add(String parentName, String childName, Action action);
-    Action select(String itemName);
+    boolean add(I parentName, I childName, Action action);
+    Action select(I itemName);
     String print();
 }

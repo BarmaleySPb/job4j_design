@@ -5,6 +5,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 
+import java.util.NoSuchElementException;
+
 
 public class MenuTest {
 
@@ -13,41 +15,47 @@ public class MenuTest {
 
     @Test
     public void whenAddItemOfMenu() {
-        Menu menu = new Menu();
-        menu.add("First Item", new ActionString());
-        StringBuilder expired = new StringBuilder()
+        Menu<String> menu = new Menu<>("Menu");
+        menu.add("Menu", "First Item", new ActionString());
+        StringBuilder expected = new StringBuilder()
+                .append("Menu")
+                .append(System.lineSeparator())
                 .append("1. First Item")
                 .append(System.lineSeparator());
         System.out.print(menu.print());
-        Assert.assertEquals(expired.toString(), log.getLog());
+        Assert.assertEquals(expected.toString(), log.getLog());
     }
 
     @Test
     public void whenAddSubItem() {
-        Menu menu = new Menu();
-        menu.add("First Item", new ActionString());
+        Menu<String> menu = new Menu<>("Menu");
+        menu.add("Menu", "First Item", new ActionString());
         menu.add("First Item", "Second Item", new ActionString());
-        StringBuilder expired = new StringBuilder()
+        StringBuilder expected = new StringBuilder()
+                .append("Menu")
+                .append(System.lineSeparator())
                 .append("1. First Item")
-                        .append(System.lineSeparator())
-                                .append("  1.1. Second Item")
-                                        .append(System.lineSeparator());
+                .append(System.lineSeparator())
+                .append("  1.1. Second Item")
+                .append(System.lineSeparator());
         System.out.print(menu.print());
-        Assert.assertEquals(expired.toString(), log.getLog());
+        Assert.assertEquals(expected.toString(), log.getLog());
     }
 
     @Test
     public void whenPrintMenu() {
-        Menu menu = new Menu();
-        menu.add("First Item", new ActionString());
-        menu.add("Fourth Item", new ActionString());
+        Menu<String> menu = new Menu<>("Menu");
+        menu.add("Menu", "First Item", new ActionString());
+        menu.add("Menu", "Fourth Item", new ActionString());
         menu.add("First Item", "Second Item", new ActionString());
         menu.add("First Item", "Third Item", new ActionString());
         menu.add("Second Item", "Fifth Item", new ActionString());
         menu.add("Fifth Item", "Sixth Item", new ActionString());
         menu.add("First Item", "Seventh Item", new ActionString());
         menu.add("Third Item", "Eighth Item", new ActionString());
-        StringBuilder expired = new StringBuilder()
+        StringBuilder expected = new StringBuilder()
+                .append("Menu")
+                .append(System.lineSeparator())
                 .append("1. First Item")
                 .append(System.lineSeparator())
                 .append("  1.1. Second Item")
@@ -65,23 +73,23 @@ public class MenuTest {
                 .append("2. Fourth Item")
                 .append(System.lineSeparator());
         System.out.print(menu.print());
-        Assert.assertEquals(expired.toString(), log.getLog());
+        Assert.assertEquals(expected.toString(), log.getLog());
     }
 
     @Test
     public void whenSelectAction() {
-        Menu menu = new Menu();
-        menu.add("First Item", new ActionString());
+        Menu<String> menu = new Menu<>("Menu");
+        menu.add("Menu", "First Item", new ActionString());
         menu.add("First Item", "Second Item", new ActionString());
         menu.select("Second Item").action();
-        String expired = "Something is happening)";
-        Assert.assertEquals(expired, log.getLog());
+        String expected = "Something is happening)";
+        Assert.assertEquals(expected, log.getLog());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void whenDoItOneDotOneDotButActionIsNull() {
-        Menu menu = new Menu();
-        menu.add("First Item", new ActionString());
+    @Test(expected = NoSuchElementException.class)
+    public void whenSelectActionButNonExistentMenuItem() {
+        Menu<String> menu = new Menu<>("Menu");
+        menu.add("Menu", "First Item", new ActionString());
         menu.add("First Item", "Second Item", new ActionString());
         menu.add("Second Item", "Third Item", new ActionString());
         menu.select("Fourth Item");
